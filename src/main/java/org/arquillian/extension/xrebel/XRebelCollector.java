@@ -1,7 +1,6 @@
 package org.arquillian.extension.xrebel;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +8,8 @@ import org.arquillian.extension.xrebel.model.Invocation;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.HTTPContext;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.ProtocolMetaData;
 import org.jboss.arquillian.container.spi.event.container.BeforeUnDeploy;
+import org.jboss.arquillian.core.api.Event;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 
 import com.google.gson.Gson;
@@ -19,6 +20,8 @@ public class XRebelCollector {
     private static final Pattern p = Pattern.compile(".*'([a-z0-9]+)/resources.*", Pattern.DOTALL);
     private String lastContext = null;
 
+    @Inject
+    private Event<XRebelResult> result;
     
     public void getId(@Observes ProtocolMetaData metaData) throws Exception {
         URL idUrl = new URL(getBase(metaData), "xrebel");
@@ -39,9 +42,10 @@ public class XRebelCollector {
         Gson gson = new GsonBuilder().create();
         Invocation[] invocations = gson.fromJson(xrebelResponse, Invocation[].class);
         
-        System.out.println(Arrays.toString(invocations));
+        result.fire(new XRebelResult(invocations));
     }
 
+    @SuppressWarnings("deprecation")
     private URL getBase(ProtocolMetaData metaData) throws Exception {
         return metaData.getContext(HTTPContext.class).getServlets().get(0).getBaseURI().toURL();
     }

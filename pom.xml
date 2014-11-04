@@ -22,8 +22,8 @@
 
     <scm>
         <connection>scm:git:git://git@github.com:aslakknutsen/arquillian-extension-xrebel.git</connection>
-        <developerConnection>scm:git:ssh://github.com/aslakknutsen/arquillian-container-proxy.git</developerConnection>
-        <url>git://github.com/aslakknutsen/arquillian-container-proxy.git</url>
+        <developerConnection>scm:git:ssh://github.com/aslakknutsen/arquillian-extension-xrebel.git</developerConnection>
+        <url>git://github.com/aslakknutsen/arquillian-extension-xrebel.git</url>
     </scm>
 
     <!-- Properties -->
@@ -31,7 +31,8 @@
 
         <!-- Versioning -->
         <version.arquillian_core>1.1.5.Final</version.arquillian_core>
-        <version.shrinkwrap_resolver>2.2.0-beta-1</version.shrinkwrap_resolver>
+        <version.arquillian_recorder>1.0.0.Alpha4</version.arquillian_recorder>
+        <version.arquillian_proxy>1.0.0.Final-SNAPSHOT</version.arquillian_proxy>
         <version.jboss_spec>1.0.1.Final</version.jboss_spec>
 
         <!-- override from parent -->
@@ -67,23 +68,32 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency> <!-- 'illegal' dependency -->
-            <groupId>org.jboss.arquillian.config</groupId>
-            <artifactId>arquillian-config-impl-base</artifactId>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3</version>
         </dependency>
-        <dependency> <!-- 'illegal' dependency -->
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-container-impl-base</artifactId>
+        <dependency>
+            <groupId>org.arquillian.extension</groupId>
+            <artifactId>arquillian-recorder-reporter-spi</artifactId>
+            <version>${version.arquillian_recorder}</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.jboss.spec.javax.servlet</groupId>
             <artifactId>jboss-servlet-api_3.1_spec</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3</version>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
@@ -93,12 +103,19 @@
         <dependency>
             <groupId>org.arquillian.container</groupId>
             <artifactId>arquillian-container-proxy</artifactId>
-            <version>1.0.0.Final-SNAPSHOT</version>
+            <version>${version.arquillian_proxy}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.extension</groupId>
+            <artifactId>arquillian-recorder-reporter-impl</artifactId>
+            <version>${version.arquillian_recorder}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

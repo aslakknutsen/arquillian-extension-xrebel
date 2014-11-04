@@ -18,7 +18,8 @@ public class SimpleDeploymentTestCase {
     @Deployment(testable = false)
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(SimpleServlet.class);
+                .addClasses(SimpleServlet.class, Country.class, CountryRepository.class)
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
 
     @ArquillianResource
